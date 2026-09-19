@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>새 게임 추가 - GameManager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="my.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">GameManager</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="add.html">Add Game</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">새로운 게임 정보 입력</h4>
+                    </div>
+                    <div class="card-body">
+                        <!-- 6개 이상의 Field 구성 -->
+                        <form id="addForm" onsubmit="return validateAddForm(event)">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="gameTitle" class="form-label">게임명 (필수)</label>
+                                    <input type="text" class="form-control" id="gameTitle" placeholder="게임 제목을 입력하세요">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="gameGenre" class="form-label">장르 (필수)</label>
+                                    <select class="form-select" id="gameGenre">
+                                        <option value="">장르를 선택하세요</option>
+                                        <option value="RPG">RPG</option>
+                                        <option value="Action">Action</option>
+                                        <option value="FPS">FPS</option>
+                                        <option value="Simulation">Simulation</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="releaseDate" class="form-label">출시일 (필수)</label>
+                                    <input type="date" class="form-control" id="releaseDate">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="price" class="form-label">가격 (₩, 필수)</label>
+                                    <input type="number" class="form-control" id="price" placeholder="가격을 숫자로 입력">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="devEmail" class="form-label">개발사 이메일 (필수)</label>
+                                <input type="email" class="form-control" id="devEmail" placeholder="example@studio.com">
+                            </div>
+                            <div class="mb-4">
+                                <label for="description" class="form-label">상세 설명</label>
+                                <textarea class="form-control" id="description" rows="4" placeholder="게임에 대한 간단한 설명을 입력하세요"></textarea>
+                            </div>
+                            <div class="d-flex gap-2 justify-content-end">
+                                <a href="index.html" class="btn btn-secondary">취소</a>
+                                <button type="submit" class="btn btn-primary">추가하기</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container"><p class="mb-0">&copy; 2026 Game Management System.</p></div>
+    </footer>
+
+    <script>
+        function validateAddForm(event) {
+            event.preventDefault(); // 기본 제출 방지
+
+            const title = document.getElementById('gameTitle').value;
+            const genre = document.getElementById('gameGenre').value;
+            const releaseDate = document.getElementById('releaseDate').value;
+            const price = document.getElementById('price').value;
+            const email = document.getElementById('devEmail').value;
+
+            // 1. 필수값 입력 및 문자열 길이 
+            if (title.trim().length < 2) {
+                alert("게임명은 최소 2자 이상 입력해야 합니다.");
+                document.getElementById('gameTitle').focus();
+                return false;
+            }
+            // 2. Select 선택 여부 
+            if (genre === "") {
+                alert("장르를 선택해주세요.");
+                document.getElementById('gameGenre').focus();
+                return false;
+            }
+            // 3. 날짜 입력 여부 
+            if (releaseDate === "") {
+                alert("출시일을 입력해주세요.");
+                document.getElementById('releaseDate').focus();
+                return false;
+            }
+            // 4. 숫자 범위 
+            if (price === "" || price < 0) {
+                alert("가격은 0원 이상의 유효한 숫자를 입력해야 합니다.");
+                document.getElementById('price').focus();
+                return false;
+            }
+            // 5. 이메일 정규식 
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("유효한 이메일 주소 형식이 아닙니다.");
+                document.getElementById('devEmail').focus();
+                return false;
+            }
+
+            // 모두 통과
+            alert("게시물이 추가됩니다.");
+            window.location.href = "index.html"; 
+            return true;
+        }
+    </script>
+</body>
+</html>
